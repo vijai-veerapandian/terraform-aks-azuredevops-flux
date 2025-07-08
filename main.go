@@ -1,4 +1,7 @@
 package main
+
 import "fmt"
 
-fuinc
+func main() {
+	fmt.Println("Hello, World!")
+}
