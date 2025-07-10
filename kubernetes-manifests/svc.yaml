@@ -4,14 +4,13 @@ metadata:
   creationTimestamp: null
   labels:
     app: simple-go-app
-  name: simple-go-app-svc
+  name: simple-go-app
+  namespace: app
 spec:
   ports:
-  - port: 8080
+  - port: 8989
     protocol: TCP
     targetPort: 8080
   selector:
     app: simple-go-app
-  type: "80"
-status:
-  loadBalancer: {}
+  type: ClusterIP
