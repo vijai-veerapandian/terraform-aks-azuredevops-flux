@@ -98,4 +98,7 @@ kubectl delete -f .
 
 ```
 kubectl port-forward -n app service/simple-go-app 8989:8989
+
+![quick testing](./assets/quick-testing.png).
+
 ```
