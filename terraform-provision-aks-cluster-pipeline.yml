@@ -20,5 +20,8 @@ stages:
               PathtoPublish: '$(System.DefaultWorkingDirectory)/terraform-manifests'
               ArtifactName: 'terraform-manifests-out'
               publishLocation: 'Container'
-
+          - task: TerraformInstaller@1
+            displayName:  Terraform install 
+            inputs:
+              terraformVersion: 'latest'            
           
