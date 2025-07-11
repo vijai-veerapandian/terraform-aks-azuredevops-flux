@@ -104,3 +104,5 @@ kubectl port-forward -n app service/simple-go-app 8989:8989
 ### Browser
 
 ![Browser](./assets/app-url-1.png)
+
+updated
