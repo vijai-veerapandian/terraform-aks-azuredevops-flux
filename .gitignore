@@ -21,3 +21,5 @@ rad.json
 #Test results file
 TestResults.xml
 kubernetes-manifests/secret.yaml
+ssh-keys-aks-cluster/ssh-key-aks-cluster-ubuntu
+ssh-keys-aks-cluster/ssh-key-aks-cluster-ubuntu.pub
