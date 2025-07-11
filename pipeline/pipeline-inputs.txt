@@ -1,0 +1,42 @@
+--------------------------------------------
+# Terraform State Storage Azure RM
+Resource Group: rg-home-lab-dev
+Storage Account: st08xthappl5
+Container: tfstate
+key: aks-base.tfstate
+
+# Manifests Folder
+terraform-manifests
+
+# System Default Working Directory
+$(System.DefaultWorkingDirectory)/terraform-manifests
+#$(Pipeline.Workspace)/terraform-manifests-out
+# List Files
+- bash: echo Contents in Pipeline Workspace Artifact Directory; ls -Ra $(System.DefaultWorkingDirectory)/terraform-manifests
+--------------------------------------------
+# Environment Name
+$(DEV_ENVIRONMENT)
+
+# Dev State File Name
+aks-$(DEV_ENVIRONMENT).tfstate
+
+# Pipeline Working Directory
+$(Pipeline.Workspace)/terraform-manifests-out
+
+# Dev Command Arguments for Terraform Plan
+-var ssh_public_key=$(sshkey.secureFilePath) 
+-var environment=$(DEV_ENVIRONMENT) 
+-out $(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).out
+
+# 1- way
+terraform plan
+terraform apply:
+
+# 2-way
+terraform plan -out planversion1.out
+terraform apply planversion1.out
+
+
+# Dev Command Arguments for Terraform Apply
+$(Pipeline.Workspace)/terraform-manifests-out/$(DEV_ENVIRONMENT)-$(Build.BuildId).out
+
