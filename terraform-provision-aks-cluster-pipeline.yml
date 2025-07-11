@@ -24,4 +24,22 @@ stages:
             displayName:  Terraform install 
             inputs:
               terraformVersion: 'latest'            
-          
+          - task: TerraformTask@5
+            displayName: Terraform init
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-manifests'
+              backendAzureRmUseEntraIdForAuthentication: false
+              backendServiceArm: 'tf-azure-devops-aks-service-conn'
+              backendAzureRmResourceGroupName: 'rg-home-lab-dev'
+              backendAzureRmStorageAccountName: 'st08xthappl5'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'aks-base.tfstate'
+          - task: TerraformTask@5
+            displayName: Terraform validate
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform-manifests'
+            
