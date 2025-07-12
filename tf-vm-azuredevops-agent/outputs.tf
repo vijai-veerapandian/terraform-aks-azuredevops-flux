@@ -21,21 +21,16 @@ output "ssh_connection_string" {
 }
 
 output "vm_management_commands" {
-  description = "Useful Azure CLI commands to manage the VM."
-  value = {
-    start   = "az vm start --resource-group ${azurerm_resource_group.main.name} --name ${var.vm_name}"
-    stop    = "az vm stop --resource-group ${azurerm_resource_group.main.name} --name ${var.vm_name}"
-    status  = "az vm show --resource-group ${azurerm_resource_group.main.name} --name ${var.vm_name} --show-details --query powerState"
-    restart = "az vm restart --resource-group ${azurerm_resource_group.main.name} --name ${var.vm_name}"
-  }
+  description = "A map of useful Azure CLI commands to manage the VM's lifecycle."
+  value       = local.vm_management_commands
 }
 
 output "cost_optimization_tips" {
   description = "Tips for optimizing the cost of this VM."
   value       = <<-EOT
     - The VM is configured with a ${var.vm_size} instance type.
-    - VM auto shuts down at ${var.autoshutdown_time} UTC daily. You can change this with the 'autoshutdown_time' variable.
-    - To stop the VM manually and deallocate compute resources, run: '${self.vm_management_commands.value.stop}'
+    - The VM is set to auto-shutdown at ${var.autoshutdown_time} UTC daily. You can change this with the 'autoshutdown_time' variable.
+    - To stop the VM manually and deallocate compute resources, run: '${local.vm_management_commands.stop}'
   EOT
 }
 
