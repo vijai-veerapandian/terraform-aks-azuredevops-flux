@@ -27,7 +27,7 @@ variable "environment" {
   default     = "dev"
 
   validation {
-    condition     = regex("^(dev|staging|prod)$", var.environment)
+    condition     = can(regex("^(dev|staging|prod)$", var.environment))
     error_message = "Environment must be one of: dev, staging, or prod."
   }
 }
@@ -100,7 +100,7 @@ variable "admin_username" {
   default     = "azureuser"
 
   validation {
-    condition     = regex("^[a-z][a-z0-9_]*$", var.admin_username)
+    condition     = can(regex("^[a-z][a-z0-9_]*$", var.admin_username))
     error_message = "Admin username must meet this condition"
   }
 }
