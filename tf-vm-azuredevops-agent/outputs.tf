@@ -17,7 +17,7 @@ output "vm_fqdn" {
 
 output "ssh_connection_string" {
   description = "The command to connect to the VM using SSH."
-  value       = "ssh ${var.admin_username}@${module.vm.public_ip_address}"
+  value       = "ssh ${var.admin_username}@${coalesce(module.vm.fqdn, module.vm.public_ip_address)}"
 }
 
 output "vm_management_commands" {

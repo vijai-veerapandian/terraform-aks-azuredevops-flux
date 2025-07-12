@@ -23,79 +23,29 @@ resource "azurerm_subnet" "main" {
 
 # Create Network Security Group and rules
 resource "azurerm_network_security_group" "main" {
-  name                = "nsg-${var.vnet_name}"
+  name                = "nsg-${var.subnet_name}" # Naming by subnet is often clearer
   location            = var.location
   resource_group_name = var.resource_group_name
-
-  # SSH access rule
-  security_rule {
-    name                       = "SSH"
-    priority                   = 1001
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "22"
-    source_address_prefixes    = var.allowed_ssh_ips
-    destination_address_prefix = "*"
-  }
-
-  # HTTP access (if needed for agent communication)
-  security_rule {
-    name                       = "HTTP"
-    priority                   = 1002
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "80"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  # HTTPS access (if needed for agent communication)
-  security_rule {
-    name                       = "HTTPS"
-    priority                   = 1003
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "443"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
-
-  # Allow outbound internet access (essential for Azure DevOps agent)
-  security_rule {
-    name                       = "AllowInternetOutbound"
-    priority                   = 1000
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "Internet"
-  }
-
-  # Allow Azure service communication
-  security_rule {
-    name                       = "AllowAzureCloudOutbound"
-    priority                   = 1001
-    direction                  = "Outbound"
-    access                     = "Allow"
-    protocol                   = "*"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "AzureCloud"
-  }
 
   tags = {
     Environment = var.environment
     Module      = "network"
   }
+}
+
+# This is the critical rule that enables SSH access from your specified IPs.
+resource "azurerm_network_security_rule" "allow_ssh_inbound" {
+  name                        = "AllowSSHInbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefixes     = var.allowed_ssh_ips
+  destination_address_prefix  = "*"
+  resource_group_name         = var.resource_group_name
+  network_security_group_name = azurerm_network_security_group.main.name
 }
 
 # Associate Network Security Group to Subnet

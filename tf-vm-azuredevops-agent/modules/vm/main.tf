@@ -34,7 +34,8 @@ resource "azurerm_network_interface" "main" {
   }
 }
 
-# Associate the Network Security Group with the Network Interface
+# The NSG is associated at the subnet level in the network module.
+# We add an association here at the NIC level for explicit clarity and control.
 resource "azurerm_network_interface_security_group_association" "main" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = var.network_security_group_id
@@ -94,8 +95,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   }
 }
 
-# Auto-shutdown configuration (optional - saves costs)
-resource "azurerm_dev_test_global_vm_shutdown_schedule" "main" {
+# Auto-shutdown configuration using the current standard resource
+resource "azurerm_virtual_machine_shutdown_schedule" "main" {
   virtual_machine_id = azurerm_linux_virtual_machine.main.id
   location           = var.location
   enabled            = true
