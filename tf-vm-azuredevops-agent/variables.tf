@@ -13,7 +13,7 @@ variable "location" {
 
   validation {
     condition = contains([
-      "East Us", "East US 2", "West US", "West US 2", "West US 3",
+      "East US", "East US 2", "West US", "West US 2", "West US 3",
       "Central US", "North Central US", "South Central US", "West Central US",
       "Canada Central", "Canada East"
     ], var.location)
@@ -98,7 +98,7 @@ variable "admin_username" {
   default     = "azureuser"
 
   validation {
-    condition     = con(regex("^[a-z][a-z0-9_-]*$", var.admin_username))
+    condition     = can(regex("^[a-z][a-z0-9_-]*$", var.admin_username))
     error_message = "Admin username must meet this condition"
 
   }
@@ -107,17 +107,39 @@ variable "admin_username" {
 variable "ssh_public_key_path" {
   description = "Path to the SSH public key file"
   type        = string
-  default     = "./.ssh/id_rsa.pub"
+  default     = "./.ssh/ssh-key-aks-cluster-ubuntu.pub"
+
+  validation {
+    condition = fileexists(var.ssh_public_key_path)
+    error_message = "Specified SSH publuc key file doesn't exist at the provided path"
 }
 
 
 variable "autoshutdown_time" {
   description = "Time to auto shutdown the VM (24-hr format)"
   type        = string
-  default     = "23000"
+  default     = "2300"
 
   validation {
-    condition     = can(regex("^([0-1]?[0-9]|2[0-3])[0-5][0-9]$", var.auto_shutdown_time))
-    error_message = "Auto shutdown time must be in 24-hr formt."
+    condition     = can(regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time))
+    error_message = "Auto shutdown time must be in 24-hr format (HHMM)."
   }
+}
+
+# Azure DevOps Agent Variables
+variable "azp_url" {
+  description = "The URL of the Azure DevOps organization (e.g., https://dev.azure.com/my-org)."
+  type        = string
+}
+
+variable "azp_pool" {
+  description = "The name of the Azure DevOps agent pool to join."
+  type        = string
+  default     = "Default"
+}
+
+variable "azp_token" {
+  description = "The Personal Access Token (PAT) for agent registration."
+  type        = string
+  sensitive   = true
 }

@@ -66,7 +66,7 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   os_disk {
     caching              = "ReadWrite"
-    storage_account_type = "Premium_LRS"  # SSD for better performance
+    storage_account_type = "Premium_LRS" # SSD for better performance
     disk_size_gb         = 64            # Sufficient space for tools and builds
   }
 
@@ -78,9 +78,16 @@ resource "azurerm_linux_virtual_machine" "main" {
     version   = "latest"
   }
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   # Custom script to install DevOps tools
   custom_data = base64encode(templatefile("${path.module}/scripts/install-devops-tools.sh", {
-    admin_username = var.admin_username
+    admin_username = var.admin_username,
+    azp_url        = var.azp_url,
+    azp_token      = var.azp_token,
+    azp_pool       = var.azp_pool
   }))
 
   tags = {

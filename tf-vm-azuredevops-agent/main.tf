@@ -12,7 +12,7 @@ resource "azurerm_resource_group" "main" {
   }
 }
 
-# Network Module
+# Network Module:
 
 module "network" {
   source = "./modules/network"
@@ -25,8 +25,6 @@ module "network" {
   subnet_address_prefixes = var.subnet_address_prefixes
   allowed_ssh_ips         = var.allowed_ssh_ips
   environment             = var.environment
-
-  depends_on = [azurerm_resource_group.main]
 
 }
 
@@ -45,6 +43,8 @@ module "vm" {
   network_security_group_id = module.network.network_security_group_id
   environment               = var.environment
   auto_shutdown_time        = var.auto_shutdown_time
+  azp_url                   = var.azp_url
+  azp_pool                  = var.azp_pool
+  azp_token                 = var.azp_token
 
-  depends_on = [module.network]
 }
