@@ -19,3 +19,8 @@ output "private_ip_address" {
   description = "The private IP address of the virtual machine."
   value       = azurerm_network_interface.main.private_ip_address
 }
+
+output "fqdn" {
+  description = "The fully qualified domain name of the public IP address."
+  value       = azurerm_public_ip.main.fqdn
+}

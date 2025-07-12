@@ -6,6 +6,7 @@ resource "azurerm_public_ip" "main" {
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
+  domain_name_label   = lower(var.vm_name)
   sku                 = "Standard"
 
   tags = {
@@ -16,10 +17,9 @@ resource "azurerm_public_ip" "main" {
 
 # Create Network Interface
 resource "azurerm_network_interface" "main" {
-  name                      = "nic-${var.vm_name}"
-  location                  = var.location
-  resource_group_name       = var.resource_group_name
-  network_security_group_id = var.network_security_group_id
+  name                = "nic-${var.vm_name}"
+  location            = var.location
+  resource_group_name = var.resource_group_name
 
   ip_configuration {
     name                          = "internal"
@@ -32,6 +32,12 @@ resource "azurerm_network_interface" "main" {
     Environment = var.environment
     Module      = "vm"
   }
+}
+
+# Associate the Network Security Group with the Network Interface
+resource "azurerm_network_interface_security_group_association" "main" {
+  network_interface_id      = azurerm_network_interface.main.id
+  network_security_group_id = var.network_security_group_id
 }
 
 # Create Ubuntu Linux Virtual Machine for Azure DevOps Agent
