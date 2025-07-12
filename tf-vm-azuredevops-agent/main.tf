@@ -42,7 +42,7 @@ module "vm" {
   subnet_id                 = module.network.subnet_id
   network_security_group_id = module.network.network_security_group_id
   environment               = var.environment
-  auto_shutdown_time        = var.auto_shutdown_time
+  auto_shutdown_time        = var.autoshutdown_time
   azp_url                   = var.azp_url
   azp_pool                  = var.azp_pool
   azp_token                 = var.azp_token
