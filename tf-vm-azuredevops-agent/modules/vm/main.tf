@@ -35,7 +35,6 @@ resource "azurerm_network_interface" "main" {
 }
 
 # The NSG is associated at the subnet level in the network module.
-# We add an association here at the NIC level for explicit clarity and control.
 resource "azurerm_network_interface_security_group_association" "main" {
   network_interface_id      = azurerm_network_interface.main.id
   network_security_group_id = var.network_security_group_id
@@ -92,24 +91,5 @@ resource "azurerm_linux_virtual_machine" "main" {
     Module      = "vm"
     Purpose     = "Azure DevOps Agent"
     OS          = "Ubuntu 22.04 LTS"
-  }
-}
-
-# Auto-shutdown configuration using the current standard resource
-resource "azurerm_virtual_machine_shutdown_schedule" "main" {
-  virtual_machine_id = azurerm_linux_virtual_machine.main.id
-  location           = var.location
-  enabled            = true
-
-  daily_recurrence_time = var.auto_shutdown_time
-  timezone              = "UTC"
-
-  notification_settings {
-    enabled = false
-  }
-
-  tags = {
-    Environment = var.environment
-    Module      = "vm"
   }
 }

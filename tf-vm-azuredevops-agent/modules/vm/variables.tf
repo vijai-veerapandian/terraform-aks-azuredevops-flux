@@ -45,11 +45,6 @@ variable "environment" {
   type        = string
 }
 
-variable "auto_shutdown_time" {
-  description = "The time for the VM to automatically shut down (HHMM format)."
-  type        = string
-}
-
 variable "azp_url" {
   description = "The URL of the Azure DevOps organization."
   type        = string
