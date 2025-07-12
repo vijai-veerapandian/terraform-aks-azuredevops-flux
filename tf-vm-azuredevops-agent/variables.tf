@@ -27,8 +27,8 @@ variable "environment" {
   default     = "dev"
 
   validation {
-    condition     = can(regex("^dev|staging|prod)$", var.environment))
-    error_message = "Environment must be one of: dev, staging, prod."
+    condition     = regex("^(dev|staging|prod)$", var.environment)
+    error_message = "Environment must be one of: dev, staging, or prod."
   }
 }
 
@@ -68,7 +68,8 @@ variable "subnet_address_prefixes" {
 variable "allowed_ssh_ips" {
   description = "List of IP address/CIDR blocks allowed to ssh to the VM"
   type        = list(string)
-  default     = ["0.0.0.0/0"]
+  # Removing the default makes this a required variable, preventing accidental
+  # exposure of the VM to the entire internet. This is a security best practice.
 }
 
 #VM Variables
@@ -87,8 +88,9 @@ variable "vm_size" {
   validation {
     condition = contains([
       "Standard_B1s", "Standard_B1ms", "Standard_B2s", "Standard_B2ms",
-    "Standard_B4ms", "Standard_D2s_v3", "Standard_D4s_v3"], var.vm_size)
-    error_message = "VM size must be open of the supported sizes for pool agents."
+      "Standard_B4ms", "Standard_D2s_v3", "Standard_D4s_v3"
+    ], var.vm_size)
+    error_message = "VM size must be one of the supported sizes for pool agents."
   }
 }
 
@@ -98,9 +100,8 @@ variable "admin_username" {
   default     = "azureuser"
 
   validation {
-    condition     = can(regex("^[a-z][a-z0-9_-]*$", var.admin_username))
+    condition     = regex("^[a-z][a-z0-9_]*$", var.admin_username)
     error_message = "Admin username must meet this condition"
-
   }
 }
 
@@ -110,8 +111,9 @@ variable "ssh_public_key_path" {
   default     = "./.ssh/ssh-key-aks-cluster-ubuntu.pub"
 
   validation {
-    condition = fileexists(var.ssh_public_key_path)
-    error_message = "Specified SSH publuc key file doesn't exist at the provided path"
+    condition     = fileexists(var.ssh_public_key_path)
+    error_message = "Specified SSH public key file doesn't exist at the provided path."
+  }
 }
 
 
@@ -121,7 +123,7 @@ variable "autoshutdown_time" {
   default     = "2300"
 
   validation {
-    condition     = can(regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time))
+    condition     = regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time)
     error_message = "Auto shutdown time must be in 24-hr format (HHMM)."
   }
 }

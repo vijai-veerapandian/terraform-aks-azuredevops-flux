@@ -1,10 +1,5 @@
 # modules/vm/main.tf - VM Module
 
-# Data source to get SSH public key
-data "local_file" "ssh_public_key" {
-  filename = pathexpand(var.ssh_public_key_path)
-}
-
 # Create Public IP
 resource "azurerm_public_ip" "main" {
   name                = "pip-${var.vm_name}"
@@ -21,9 +16,10 @@ resource "azurerm_public_ip" "main" {
 
 # Create Network Interface
 resource "azurerm_network_interface" "main" {
-  name                = "nic-${var.vm_name}"
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  name                      = "nic-${var.vm_name}"
+  location                  = var.location
+  resource_group_name       = var.resource_group_name
+  network_security_group_id = var.network_security_group_id
 
   ip_configuration {
     name                          = "internal"
@@ -36,12 +32,6 @@ resource "azurerm_network_interface" "main" {
     Environment = var.environment
     Module      = "vm"
   }
-}
-
-# Associate Network Security Group to Network Interface
-resource "azurerm_network_interface_security_group_association" "main" {
-  network_interface_id      = azurerm_network_interface.main.id
-  network_security_group_id = var.network_security_group_id
 }
 
 # Create Ubuntu Linux Virtual Machine for Azure DevOps Agent
@@ -61,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = data.local_file.ssh_public_key.content
+    public_key = file(var.ssh_public_key_path)
   }
 
   os_disk {
