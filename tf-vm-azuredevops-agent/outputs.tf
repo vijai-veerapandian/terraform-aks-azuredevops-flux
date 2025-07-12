@@ -37,5 +37,4 @@ output "cost_optimization_tips" {
 output "vm_principal_id" {
   description = "The principal ID of the system-assigned managed identity for the VM. Use this to grant the VM access to other Azure resources."
   value       = module.vm.vm_principal_id
-  sensitive   = true
 }
