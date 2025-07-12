@@ -29,7 +29,6 @@ output "cost_optimization_tips" {
   description = "Tips for optimizing the cost of this VM."
   value       = <<-EOT
     - The VM is configured with a ${var.vm_size} instance type.
-    - The VM is set to auto-shutdown at ${var.autoshutdown_time} UTC daily. You can change this with the 'autoshutdown_time' variable.
     - To stop the VM manually and deallocate compute resources, run: '${local.vm_management_commands.stop}'
   EOT
 }
