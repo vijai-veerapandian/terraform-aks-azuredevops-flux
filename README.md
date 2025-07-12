@@ -106,3 +106,15 @@ kubectl port-forward -n app service/simple-go-app 8989:8989
 ![Browser](./assets/app-url-1.png)
 
 updated
+
+
+### Terraform to deploy Azure VM to support Azuredevops self-host pool agent.
+
+```
+terraform init
+```
+```
+terraform validate
+terraform plan -out=agent-vm.tfplan
+terraform apply agent-vm.tfplan
+```
