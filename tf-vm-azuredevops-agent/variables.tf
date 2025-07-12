@@ -117,17 +117,6 @@ variable "ssh_public_key_path" {
 }
 
 
-variable "autoshutdown_time" {
-  description = "Time to auto shutdown the VM (24-hr format)"
-  type        = string
-  default     = "2300"
-
-  validation {
-    condition     = regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time)
-    error_message = "Auto shutdown time must be in 24-hr format (HHMM)."
-  }
-}
-
 # Azure DevOps Agent Variables
 variable "azp_url" {
   description = "The URL of the Azure DevOps organization (e.g., https://dev.azure.com/my-org)."
