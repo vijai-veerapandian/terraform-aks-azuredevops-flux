@@ -27,8 +27,8 @@ variable "environment" {
   default     = "dev"
 
   validation {
-    condition     = can(regex("^(dev|staging|prod)$", var.environment))
-    error_message = "The environment variable must be one of: dev, staging, or prod."
+    condition     = regex("^(dev|staging|prod)$", var.environment)
+    error_message = "Environment must be one of: dev, staging, or prod."
   }
 }
 
@@ -100,8 +100,8 @@ variable "admin_username" {
   default     = "azureuser"
 
   validation {
-    condition     = can(regex("^[a-z][a-z0-9_]*$", var.admin_username))
-    error_message = "Admin username must start with a lowercase letter and can only contain lowercase letters, numbers, and underscores."
+    condition     = regex("^[a-z][a-z0-9_]*$", var.admin_username)
+    error_message = "Admin username must meet this condition"
   }
 }
 
@@ -123,8 +123,8 @@ variable "autoshutdown_time" {
   default     = "2300"
 
   validation {
-    condition     = can(regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time))
-    error_message = "The auto_shutdown_time variable must be in a valid 24-hour format (e.g., 0930 or 2300)."
+    condition     = regex("^([01]?[0-9]|2[0-3])[0-5][0-9]$", var.autoshutdown_time)
+    error_message = "Auto shutdown time must be in 24-hr format (HHMM)."
   }
 }
 
