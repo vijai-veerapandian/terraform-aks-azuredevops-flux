@@ -43,3 +43,7 @@ rad.json
 *.g.xlf
 *.flf
 TestResults.xml
+# Terraform
+.terraform.local.hcl
+.terraform/
+terraform.tfstate.backup

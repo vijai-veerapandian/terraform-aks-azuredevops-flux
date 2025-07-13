@@ -1,0 +1,106 @@
+# Terraform .gitignore
+
+# Local .terraform directories and files
+.terraform/
+**/.terraform/*
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you do wish to add to version control using negated pattern
+# !example_override.tf
+
+# Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
+*.tfplan
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore .terraform.lock.hcl if you want to (uncomment if needed)
+# Note: It's generally recommended to commit this file for consistency
+# .terraform.lock.hcl
+
+# Azure specific
+.azure/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# Keys and certificates
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Local scripts (if any)
+local_scripts/
+scripts/local/
+
+# Backup files
+*backup*
+
+# Test files (if you have any)
+*test*
+test_*
+
+# Documentation generated files
+docs/generated/
+
+# Terraform modules cache
+.terraform.d/
+
+# Terraform plugin cache
+terraform.d/
+
+# Any local configuration files
+local.tf
+local.tfvars
+
+# Ignore any file with secrets in the name
+*secret*
+*secrets*
+*password*
+*passwords*
+
+# Terraform
+.terraform.local.hcl
+.terraform/
+terraform.tfstate.backup
